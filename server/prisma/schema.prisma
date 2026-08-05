@@ -1,0 +1,251 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  aprendiz
+  admin
+}
+
+enum Rank {
+  Aprendiz
+  Hierro
+  Plata
+  Oro
+  Legendario
+}
+
+enum MembershipStatus {
+  activo
+  vencido
+  cancelado
+}
+
+enum SkoolSyncStatus {
+  pendiente
+  sincronizado
+  error
+}
+
+enum ProductCode {
+  libro
+  curso
+  curso_con_descuento
+  asesoria
+}
+
+enum SaleStatus {
+  pendiente
+  confirmada
+  reembolsada
+}
+
+enum CommissionStatus {
+  bloqueada
+  liberada
+  pagada
+}
+
+enum PaymentMethod {
+  stripe
+  mercadopago
+}
+
+enum MembershipPaymentStatus {
+  pendiente
+  pagado
+  fallido
+  reembolsado
+}
+
+enum FreeReason {
+  libro_1_mes
+  curso_1_anio
+}
+
+enum WithdrawalStatus {
+  pendiente
+  en_proceso
+  completado
+  rechazado
+}
+
+model User {
+  id                 String            @id @default(uuid())
+  name               String
+  email              String            @unique
+  phone              String
+  estadoMx           String            @map("estado_mx")
+  curp               String
+  bankName           String            @map("bank_name")
+  clabe              String
+  passwordHash       String            @map("password_hash")
+  role               UserRole          @default(aprendiz)
+
+  referredById       String?           @map("referred_by")
+  referredBy         User?             @relation("Referrals", fields: [referredById], references: [id])
+  referrals          User[]            @relation("Referrals")
+
+  promoterCode       String            @unique @map("promoter_code")
+  rank               Rank              @default(Aprendiz)
+  xp                 Int               @default(0)
+
+  membershipStatus   MembershipStatus  @default(vencido) @map("membership_status")
+  membershipExpiresAt DateTime?        @map("membership_expires_at")
+
+  skoolUserId        String?           @map("skool_user_id")
+  skoolSyncStatus     SkoolSyncStatus   @default(pendiente) @map("skool_sync_status")
+
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+
+  salesAsPromoter    Sale[]            @relation("PromoterSales")
+  salesAsUpline      Sale[]            @relation("UplineSales")
+  membershipPayments MembershipPayment[]
+  withdrawals        Withdrawal[]
+  xpLogs             XpLog[]
+  skoolSyncLogs      SkoolSyncLog[]
+  enteredSales       Sale[]            @relation("EnteredByAdmin")
+
+  @@map("users")
+}
+
+model Product {
+  id                   String   @id @default(uuid())
+  code                 ProductCode @unique
+  name                 String
+  basePrice            Decimal  @map("base_price") @db.Decimal(10, 2)
+  commissionL1Pct      Decimal  @map("commission_l1_pct") @db.Decimal(5, 2)
+  commissionL1PctTier2 Decimal? @map("commission_l1_pct_tier2") @db.Decimal(5, 2)
+  tier2MinMonthlySales Int?     @map("tier2_min_monthly_sales")
+  commissionL2Pct      Decimal  @map("commission_l2_pct") @db.Decimal(5, 2)
+
+  sales                Sale[]
+
+  @@map("products")
+}
+
+model Sale {
+  id                       String            @id @default(uuid())
+  productId                String            @map("product_id")
+  product                  Product           @relation(fields: [productId], references: [id])
+
+  buyerName                String            @map("buyer_name")
+  buyerEmail               String?           @map("buyer_email")
+  buyerPhone               String?           @map("buyer_phone")
+
+  promoterId               String            @map("promoter_id")
+  promoter                 User              @relation("PromoterSales", fields: [promoterId], references: [id])
+
+  uplineId                 String?           @map("upline_id")
+  upline                   User?             @relation("UplineSales", fields: [uplineId], references: [id])
+
+  saleDate                 DateTime          @map("sale_date") @db.Date
+  grossAmount              Decimal           @map("gross_amount") @db.Decimal(10, 2)
+
+  commissionL1PctApplied   Decimal           @map("commission_l1_pct_applied") @db.Decimal(5, 2)
+  commissionL1Amount       Decimal           @map("commission_l1_amount") @db.Decimal(10, 2)
+  commissionL2Amount       Decimal?          @map("commission_l2_amount") @db.Decimal(10, 2)
+
+  status                   SaleStatus        @default(pendiente)
+  commissionReleaseDate    DateTime          @map("commission_release_date") @db.Date
+  commissionStatus         CommissionStatus  @default(bloqueada) @map("commission_status")
+
+  enteredByAdminId         String            @map("entered_by_admin_id")
+  enteredByAdmin           User              @relation("EnteredByAdmin", fields: [enteredByAdminId], references: [id])
+
+  notes                    String?
+
+  createdAt                DateTime          @default(now()) @map("created_at")
+
+  xpLogs                   XpLog[]
+
+  @@index([promoterId])
+  @@index([uplineId])
+  @@index([saleDate])
+  @@map("sales")
+}
+
+model MembershipPayment {
+  id            String                    @id @default(uuid())
+  userId        String                    @map("user_id")
+  user          User                      @relation(fields: [userId], references: [id])
+
+  amount        Decimal                   @db.Decimal(10, 2)
+  paymentMethod PaymentMethod?            @map("payment_method")
+  transactionId String?                   @map("transaction_id")
+  status        MembershipPaymentStatus   @default(pendiente)
+
+  periodStart   DateTime                  @map("period_start") @db.Date
+  periodEnd     DateTime                  @map("period_end") @db.Date
+
+  isFreePeriod  Boolean                   @default(false) @map("is_free_period")
+  freeReason    FreeReason?               @map("free_reason")
+
+  createdAt     DateTime                  @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@map("membership_payments")
+}
+
+model Withdrawal {
+  id           String            @id @default(uuid())
+  userId       String            @map("user_id")
+  user         User              @relation(fields: [userId], references: [id])
+
+  amount       Decimal           @db.Decimal(10, 2)
+  bankName     String            @map("bank_name")
+  clabe        String
+
+  status       WithdrawalStatus  @default(pendiente)
+  requestedAt  DateTime          @default(now()) @map("requested_at")
+  processedAt  DateTime?         @map("processed_at")
+  adminNotes   String?           @map("admin_notes")
+
+  @@index([userId])
+  @@map("withdrawals")
+}
+
+model XpLog {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  user          User     @relation(fields: [userId], references: [id])
+
+  eventType     String   @map("event_type")
+  xpDelta       Int      @map("xp_delta")
+
+  relatedSaleId String?  @map("related_sale_id")
+  relatedSale   Sale?    @relation(fields: [relatedSaleId], references: [id])
+
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("xp_log")
+}
+
+model RankThreshold {
+  id           String @id @default(uuid())
+  rankName     Rank   @unique @map("rank_name")
+  xpRequired   Int    @map("xp_required")
+  sortOrder    Int    @map("sort_order")
+
+  @@map("rank_thresholds")
+}
+
+model SkoolSyncLog {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+
+  action    String
+  status    String
+  response  String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("skool_sync_log")
+}
