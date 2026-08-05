@@ -69,6 +69,26 @@ npm run dev             # http://localhost:5173 (proxy a /api -> localhost:4000)
 
 Ver `server/.env.example` para la lista completa. Nunca se commitea `.env` real (está en `.gitignore`).
 
+## Deploy en Vercel (versión de prueba)
+
+El proyecto son **dos proyectos de Vercel separados** dentro del mismo repo, cada uno con su
+propio "Root Directory":
+
+- **`server`** → función serverless de Express. `server/api/index.ts` exporta la app y
+  `server/vercel.json` reescribe todas las rutas hacia ahí, así Express recibe las URLs
+  originales (`/auth/login`, `/dashboard/me`, etc.) tal como en local.
+- **`client`** → sitio estático de Vite. Se le pasa `VITE_API_BASE_URL` apuntando al dominio
+  del proyecto `server` ya desplegado (ver `client/.env.example`).
+
+Variables de entorno a configurar en el proyecto `server` de Vercel: las mismas de
+`server/.env.example` (`DATABASE_URL`/`DIRECT_URL` de Neon o Supabase, `JWT_SECRET`, etc.).
+Después de correr `npx prisma migrate deploy` contra esa base de datos, el proyecto queda listo.
+
+**Limitación conocida de esta versión de prueba**: el cron que libera comisiones a los 10 días
+(`server/src/index.ts`) solo corre en local — las funciones serverless de Vercel no mantienen
+procesos vivos. Para producción real hace falta un **Vercel Cron Job** que le pegue a un
+endpoint dedicado (pendiente, no bloquea probar registro/login/dashboard/ventas).
+
 ## Estructura
 
 ```

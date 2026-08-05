@@ -1,4 +1,7 @@
-const BASE_URL = "/api";
+// Local dev: "/api" pasa por el proxy de Vite (ver vite.config.ts) hacia
+// localhost:4000. En Vercel, VITE_API_BASE_URL apunta directo al dominio
+// del backend desplegado (ej. https://codigos-riqueza-api.vercel.app).
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 function getToken(): string | null {
   return localStorage.getItem("token");
