@@ -6,26 +6,44 @@ import { registerSale } from "../services/commissionEngine";
 
 export const salesRouter = Router();
 
-const registerSaleSchema = z.object({
-  productCode: z.enum(["libro", "curso", "curso_con_descuento", "asesoria"]),
-  buyerName: z.string().min(2),
-  buyerEmail: z.string().email().optional(),
-  buyerPhone: z.string().optional(),
-  promoterId: z.string().uuid(),
-  saleDate: z.coerce.date(),
-  grossAmount: z.number().positive(),
-  notes: z.string().optional(),
-});
+const registerSaleSchema = z
+  .object({
+    productCode: z.enum(["libro", "curso", "curso_con_descuento", "asesoria"]),
+    buyerName: z.string().min(2),
+    buyerEmail: z.string().email().optional(),
+    buyerPhone: z.string().optional(),
+    promoterId: z.string().uuid().optional(),
+    promoterEmail: z.string().email().optional(),
+    saleDate: z.coerce.date(),
+    grossAmount: z.number().positive(),
+    notes: z.string().optional(),
+  })
+  .refine((data) => data.promoterId || data.promoterEmail, {
+    message: "Debes indicar promoterId o promoterEmail",
+    path: ["promoterEmail"],
+  });
 
 // Carga manual de una venta por el admin (Fase 1/2 del MVP: el libro/curso/asesoría
 // se venden fuera de la plataforma y aquí solo se registra quién vendió y a quién).
+// El admin puede identificar al promotor por email (más práctico) o por id.
 salesRouter.post("/", requireAuth, requireAdmin, async (req, res) => {
   const parsed = registerSaleSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: parsed.error.flatten() });
   }
 
-  const sale = await registerSale({ ...parsed.data, enteredByAdminId: req.auth!.userId });
+  const { promoterEmail, ...data } = parsed.data;
+  let promoterId = data.promoterId;
+
+  if (!promoterId && promoterEmail) {
+    const promoter = await prisma.user.findUnique({ where: { email: promoterEmail } });
+    if (!promoter) {
+      return res.status(404).json({ error: `No existe ningún aprendiz con el email ${promoterEmail}` });
+    }
+    promoterId = promoter.id;
+  }
+
+  const sale = await registerSale({ ...data, promoterId: promoterId!, enteredByAdminId: req.auth!.userId });
   res.status(201).json(sale);
 });
 

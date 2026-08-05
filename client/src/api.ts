@@ -12,6 +12,15 @@ export function setToken(token: string | null) {
   else localStorage.removeItem("token");
 }
 
+export function getRole(): string | null {
+  return localStorage.getItem("role");
+}
+
+export function setRole(role: string | null) {
+  if (role) localStorage.setItem("role", role);
+  else localStorage.removeItem("role");
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
   const res = await fetch(`${BASE_URL}${path}`, {
@@ -45,7 +54,7 @@ export interface RegisterInput {
 
 export interface AuthResponse {
   token: string;
-  user: { id: string; name: string; email: string; promoterCode: string };
+  user: { id: string; name: string; email: string; promoterCode: string; role?: string };
 }
 
 export function register(input: RegisterInput) {
@@ -92,4 +101,27 @@ export interface DashboardData {
 
 export function getDashboard() {
   return request<DashboardData>("/dashboard/me");
+}
+
+export interface CreateSaleInput {
+  productCode: "libro" | "curso" | "curso_con_descuento" | "asesoria";
+  buyerName: string;
+  buyerEmail?: string;
+  buyerPhone?: string;
+  promoterEmail: string;
+  saleDate: string;
+  grossAmount: number;
+  notes?: string;
+}
+
+export interface SaleResult {
+  id: string;
+  commissionL1PctApplied: string;
+  commissionL1Amount: string;
+  commissionL2Amount: string | null;
+  commissionReleaseDate: string;
+}
+
+export function createSale(input: CreateSaleInput) {
+  return request<SaleResult>("/sales", { method: "POST", body: JSON.stringify(input) });
 }

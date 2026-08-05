@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { register, setToken } from "../api";
+import { register, setRole, setToken } from "../api";
 
 interface Props {
   onAuth: (token: string) => void;
@@ -36,6 +36,7 @@ export default function Register({ onAuth }: Props) {
     try {
       const result = await register({ ...form, referredByPromoterCode });
       setToken(result.token);
+      setRole("aprendiz");
       onAuth(result.token);
       navigate("/dashboard");
     } catch (err) {

@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, setToken } from "../api";
+import { login, setRole, setToken } from "../api";
 
 interface Props {
   onAuth: (token: string) => void;
@@ -20,6 +20,7 @@ export default function Login({ onAuth }: Props) {
     try {
       const result = await login(email, password);
       setToken(result.token);
+      setRole(result.user.role ?? "aprendiz");
       onAuth(result.token);
       navigate("/dashboard");
     } catch (err) {
