@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { register, setToken } from "../api";
 
 interface Props {
@@ -90,7 +90,7 @@ export default function Register({ onAuth }: Props) {
         </button>
       </form>
       <p className="hint">
-        ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+        ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
       </p>
     </div>
   );

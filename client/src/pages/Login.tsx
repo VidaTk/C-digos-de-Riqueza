@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login, setToken } from "../api";
 
 interface Props {
@@ -47,7 +47,7 @@ export default function Login({ onAuth }: Props) {
         </button>
       </form>
       <p className="hint">
-        ¿No tienes cuenta? <a href="/registro">Regístrate</a>
+        ¿No tienes cuenta? <Link to="/registro">Regístrate</Link>
       </p>
     </div>
   );
