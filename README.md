@@ -18,12 +18,20 @@ Construido y probado en esta sesión:
   - Liberación de comisiones a 10 días de la venta, vía cron diario (6:00 AM hora CDMX).
 - Endpoint de carga manual de ventas (solo admin) y dashboard del aprendiz (`GET /dashboard/me`).
 - Seed de catálogo de productos (Libro, Curso, Curso con descuento, Asesoría) y umbrales de rango/XP.
+- Integración de Stripe Checkout para la membresía mensual (tarjeta + OXXO; SPEI pendiente de
+  confirmar en el dashboard de Stripe) con webhook idempotente que activa la membresía —
+  ver `server/src/routes/payments.ts` y `server/src/routes/stripeWebhook.ts`. Sin
+  `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` configuradas, estos endpoints responden 503
+  en vez de romper el resto del servidor.
 
 Validado localmente end-to-end: registro con referido → login → venta → comisión nivel 1 y 2 →
 dashboard reflejando los montos correctos, y control de acceso (401/403) funcionando.
 
 **Pendiente (ver `docs/decisiones.md` y el cronograma original):**
-- Integración real de pagos (Stripe **y** MercadoPago) para la membresía.
+- Integración de MercadoPago (Stripe ya está implementado, falta MercadoPago).
+- Probar Stripe con credenciales reales de modo test (aún no se ha ejecutado un pago real).
+- Confirmar en el dashboard de Stripe si SPEI (transferencia) está habilitado para la cuenta;
+  hoy Checkout solo pide tarjeta y OXXO.
 - Exportación CSV para Skool.
 - Frontend (React) — dashboards de aprendiz y admin.
 - Endpoint de retiros y reporte de comisiones semanal (jueves mediodía).

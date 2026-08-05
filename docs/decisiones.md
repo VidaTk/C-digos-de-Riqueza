@@ -7,6 +7,15 @@ Registro de decisiones tomadas con el cliente para evitar ambigüedad al impleme
 - Riesgo aceptado: duplica el trabajo de integración/webhooks respecto a usar un solo proveedor;
   puede presionar el cronograma del MVP (1-sept). Si se atrasa, la opción de recorte es lanzar
   primero con uno solo y sumar el segundo después del MVP.
+- **Stripe**: se usa **Checkout** (página hospedada por Stripe), no Elements — más rápido de
+  implementar para el plazo del MVP.
+- **Métodos de pago en Stripe**: tarjeta + OXXO ya implementados. SPEI (transferencia) se pidió
+  también, pero en Stripe eso requiere el método `customer_balance` con `bank_transfer` tipo
+  `mx_bank_transfer`, que típicamente necesita habilitación explícita en la cuenta de Stripe —
+  **queda pendiente de confirmar** una vez tengamos acceso al dashboard real; no está en el
+  código todavía para no bloquear el resto de la integración.
+- Necesario de tu lado para poder probar de verdad: `STRIPE_SECRET_KEY` de modo test como mínimo
+  (modo live cuando la cuenta esté verificada para cobrar en MXN/México).
 
 ## Skool
 - No hay acceso confirmado a una API de Skool para roles/insignias.
