@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { env } from "../lib/env";
 import { prisma } from "../lib/prisma";
 import { requireAuth } from "../middleware/requireAuth";
 
@@ -83,7 +84,7 @@ dashboardRouter.get("/me", requireAuth, async (req, res) => {
       name: user.name,
       email: user.email,
       promoterCode: user.promoterCode,
-      promoterLink: `${process.env.APP_BASE_URL ?? ""}/?p=${user.promoterCode}`,
+      promoterLink: `${env.appBaseUrl}/?p=${user.promoterCode}`,
       rank: user.rank,
       xp: user.xp,
       membershipStatus: user.membershipStatus,
