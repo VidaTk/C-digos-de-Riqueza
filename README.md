@@ -23,9 +23,12 @@ Construido y probado en esta sesión:
   ver `server/src/routes/payments.ts` y `server/src/routes/stripeWebhook.ts`. Sin
   `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` configuradas, estos endpoints responden 503
   en vez de romper el resto del servidor.
+- Frontend mínimo (React + Vite): registro (con enlace de promotor por `?p=`), login y
+  dashboard del aprendiz — ver `client/`.
 
-Validado localmente end-to-end: registro con referido → login → venta → comisión nivel 1 y 2 →
-dashboard reflejando los montos correctos, y control de acceso (401/403) funcionando.
+Validado localmente end-to-end, incluyendo navegador real: registro con referido → login →
+venta cargada por admin → comisión nivel 1 y 2 calculada correctamente → dashboard del aprendiz
+y del upline reflejando los montos correctos, y control de acceso (401/403) funcionando.
 
 **Pendiente (ver `docs/decisiones.md` y el cronograma original):**
 - Integración de MercadoPago (Stripe ya está implementado, falta MercadoPago).
@@ -33,7 +36,8 @@ dashboard reflejando los montos correctos, y control de acceso (401/403) funcion
 - Confirmar en el dashboard de Stripe si SPEI (transferencia) está habilitado para la cuenta;
   hoy Checkout solo pide tarjeta y OXXO.
 - Exportación CSV para Skool.
-- Frontend (React) — dashboards de aprendiz y admin.
+- Pantalla de pago de membresía en el frontend (hoy solo existe el endpoint del backend).
+- Dashboard admin (Fase 3).
 - Endpoint de retiros y reporte de comisiones semanal (jueves mediodía).
 - Descarga de datos del mes en Excel.
 
@@ -41,18 +45,24 @@ dashboard reflejando los montos correctos, y control de acceso (401/403) funcion
 
 - **Backend**: Node.js + Express + TypeScript, Prisma ORM.
 - **Base de datos**: PostgreSQL (recomendado: Neon o Supabase para compatibilidad serverless con Vercel).
-- **Frontend** (próximo paso): React + Vite + TypeScript.
+- **Frontend**: React + Vite + TypeScript.
 - **Hosting**: Vercel.
 
 ## Setup local
 
 ```bash
+# Backend
 cd server
 cp .env.example .env   # completa DATABASE_URL, JWT_SECRET, etc.
 npm install
 npx prisma migrate dev --name init
 npx tsx prisma/seed.ts
 npm run dev             # http://localhost:4000
+
+# Frontend (en otra terminal)
+cd client
+npm install
+npm run dev             # http://localhost:5173 (proxy a /api -> localhost:4000)
 ```
 
 ### Variables de entorno clave (`server/.env`)
@@ -68,7 +78,9 @@ server/
   src/routes/               # auth, dashboard, sales
   src/services/             # motor de comisiones
   src/middleware/           # requireAuth, requireAdmin
-client/                     # (pendiente) frontend React
+client/
+  src/pages/                # Register, Login, Dashboard
+  src/api.ts                 # cliente fetch hacia el backend
 docs/decisiones.md          # decisiones de negocio confirmadas con el cliente
 ```
 
