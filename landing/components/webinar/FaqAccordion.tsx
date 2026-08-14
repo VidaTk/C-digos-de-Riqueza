@@ -14,7 +14,7 @@ const FAQS = [
   {
     pregunta: "¿Me van a vender cosas en el webinar?",
     respuesta:
-      "Sí. Te voy a hacer una oferta al final. Pero es una oferta real, no un truco.",
+      "Sí. Te voy a hacer una oferta al final. Será una oferta real e irresistible.",
   },
   {
     pregunta: "¿Sirve si apenas estoy empezando?",

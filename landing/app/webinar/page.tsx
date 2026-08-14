@@ -5,7 +5,6 @@ import RootCauses from "@/components/webinar/RootCauses";
 import SolutionTeaser from "@/components/webinar/SolutionTeaser";
 import ResultsSection from "@/components/webinar/ResultsSection";
 import BenefitsList from "@/components/webinar/BenefitsList";
-import OfferSection from "@/components/webinar/OfferSection";
 import UrgencyBar from "@/components/webinar/UrgencyBar";
 import FaqAccordion from "@/components/webinar/FaqAccordion";
 import AboutSection from "@/components/webinar/AboutSection";
@@ -37,7 +36,6 @@ export default function WebinarPage() {
       <SolutionTeaser />
       <ResultsSection />
       <BenefitsList />
-      <OfferSection />
       <UrgencyBar />
       <FaqAccordion />
       <AboutSection />

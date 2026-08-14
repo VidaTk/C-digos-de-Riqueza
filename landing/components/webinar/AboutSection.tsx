@@ -18,10 +18,10 @@ export default function AboutSection() {
         />
 
         <p className="mt-6 text-lg leading-relaxed text-navy/80">
-          Llevo 25 años en redes de mercadeo y venta directa en México y LATAM.
-          Formé equipos, implementé estrategias comerciales para empresas del
-          sector, y ahora escribo sobre esto porque hay conversaciones que
-          nadie quiere tener.
+          Soy Antonio Villanueva y llevo 25 años en redes de mercadeo y venta
+          directa en México y LATAM. Formé equipos, implementé estrategias
+          comerciales para empresas del sector, y ahora escribo sobre esto
+          porque hay conversaciones que nadie quiere tener.
         </p>
 
         <p className="mt-6 font-heading text-lg font-bold text-navy">

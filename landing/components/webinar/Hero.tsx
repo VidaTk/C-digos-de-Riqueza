@@ -30,7 +30,7 @@ export default function Hero() {
         </p>
 
         <p className="mt-8 text-xs uppercase tracking-wide text-white/60">
-          Webinar en vivo · {webinar.fechaLegible} · {webinar.duracionMinutos} minutos
+          Webinar en vivo · {webinar.duracionMinutos} minutos · Te contactamos con los detalles
         </p>
       </div>
     </section>

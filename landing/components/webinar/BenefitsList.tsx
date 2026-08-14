@@ -2,7 +2,7 @@ const BENEFICIOS = [
   "Entender por qué tu equipo se estancó (y no es lo que crees)",
   "Ver el sistema paso a paso que funciona en cualquier empresa de multinivel",
   "Descubrir el orden correcto de las acciones (la mayoría comete errores aquí)",
-  "Saber exactamente qué hacer el lunes cuando salgas del webinar",
+  "Saber exactamente qué hacer cuando salgas del webinar",
 ];
 
 export default function BenefitsList() {

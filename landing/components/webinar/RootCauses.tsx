@@ -1,7 +1,7 @@
 const RAZONES = [
   {
     icono: "🔍",
-    titulo: "No paras de prospectar pero sin resultados",
+    titulo: "No sabes el modelo de prospectar de forma inteligente",
     descripcion:
       "Hablas con tu lista de contactos y cuando esa lista se agota, no hay nuevos contactos. Y conseguir nuevos no es fácil.",
   },

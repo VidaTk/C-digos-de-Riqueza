@@ -1,5 +1,3 @@
-import { webinar } from "@/config/oferta";
-
 export default function SolutionTeaser() {
   return (
     <section className="bg-navy px-6 py-16 text-white sm:py-20">
@@ -10,9 +8,8 @@ export default function SolutionTeaser() {
         </p>
 
         <p className="mt-6 text-lg leading-relaxed text-white/85">
-          En el webinar del {webinar.fechaLegible.split(",")[0]}, te voy a mostrar
-          los 4 factores que separan a quien construye un ingreso que dura de
-          quien desaparece en un año.
+          En el webinar, te voy a mostrar los 4 factores que separan a quien
+          construye un ingreso que dura de quien desaparece en un año.
         </p>
 
         <p className="mt-6 text-lg font-semibold text-white">
