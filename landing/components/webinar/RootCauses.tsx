@@ -1,9 +1,9 @@
 const RAZONES = [
   {
     icono: "🔍",
-    titulo: "No sabes prospectar profesionalmente",
+    titulo: "No paras de prospectar pero sin resultados",
     descripcion:
-      "Esperas que la gente venga a ti. Hablas con tu lista de contactos y cuando esa lista se agota, no hay nuevos contactos. Fin de la historia.",
+      "Hablas con tu lista de contactos y cuando esa lista se agota, no hay nuevos contactos. Y conseguir nuevos no es fácil.",
   },
   {
     icono: "🎤",
