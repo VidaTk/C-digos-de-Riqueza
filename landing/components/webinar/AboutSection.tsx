@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function AboutSection() {
   return (
     <section className="bg-navy/[0.03] px-6 py-16 sm:py-20">
@@ -6,12 +8,14 @@ export default function AboutSection() {
           Hablo desde la experiencia, no desde la teoría
         </h2>
 
-        <div
-          aria-hidden
-          className="mt-8 flex h-28 w-28 items-center justify-center rounded-full bg-navy font-heading text-3xl font-bold text-gold"
-        >
-          YSLP
-        </div>
+        <Image
+          src="/foto-perfil.jpg"
+          alt="Fundador de Yo Soy Líder Profesional"
+          width={160}
+          height={160}
+          className="mt-8 h-32 w-32 rounded-full border-4 border-gold object-cover sm:h-40 sm:w-40"
+          priority={false}
+        />
 
         <p className="mt-6 text-lg leading-relaxed text-navy/80">
           Llevo 25 años en redes de mercadeo y venta directa en México y LATAM.
