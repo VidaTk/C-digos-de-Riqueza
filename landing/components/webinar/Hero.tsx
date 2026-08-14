@@ -9,7 +9,7 @@ export default function Hero() {
       />
       <div className="relative mx-auto flex min-h-[560px] max-w-5xl flex-col items-center px-6 py-16 text-center sm:min-h-[640px] sm:py-24">
         <p className="font-heading text-sm font-bold uppercase tracking-[0.2em] text-gold sm:text-base">
-          Dentro de 6 días, te muestro
+          En el webinar en vivo te muestro
         </p>
 
         <h1 className="mt-4 max-w-3xl font-heading text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl">
