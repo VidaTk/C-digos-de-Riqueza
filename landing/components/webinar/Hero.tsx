@@ -13,7 +13,7 @@ export default function Hero() {
         </p>
 
         <h1 className="mt-4 max-w-3xl font-heading text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl">
-          Cómo construir un equipo que no dependa de ti
+          Cómo construir una red de multinivel que no dependa de ti
         </h1>
 
         <p className="mt-5 max-w-xl text-lg text-white/85 sm:text-xl">
