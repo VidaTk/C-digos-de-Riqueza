@@ -32,7 +32,7 @@ export default function GraciasPage() {
       </div>
 
       <p className="mt-8 text-sm text-white/60">
-        Mientras tanto, guarda esta fecha en tu calendario para no perdértelo.
+        Mientras tanto, guarda este horario en tu calendario para no perdértelo.
       </p>
 
       <Link

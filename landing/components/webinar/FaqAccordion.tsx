@@ -4,8 +4,8 @@ import { useState } from "react";
 
 const FAQS = [
   {
-    pregunta: "¿Cuándo es exactamente?",
-    respuesta: "20 de agosto a las 7 pm CDMX. Dura 60 minutos.",
+    pregunta: "¿A qué hora es exactamente?",
+    respuesta: "A las 7 pm CDMX. Dura 60 minutos.",
   },
   {
     pregunta: "¿Cuánto cuesta?",

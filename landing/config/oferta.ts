@@ -6,7 +6,7 @@
 export const webinar = {
   // ISO 8601 con offset explícito de CDMX (UTC-6, sin horario de verano).
   fechaISO: "2026-08-20T19:00:00-06:00",
-  fechaLegible: "20 de agosto, 7:00 pm (CDMX)",
+  fechaLegible: "Hora: 7:00 pm (CDMX)",
   duracionMinutos: 60,
   zonaHoraria: "America/Mexico_City",
 };
