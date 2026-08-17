@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     "En vivo y gratis: el sistema de 25 años para profesionalizar tu negocio de redes de mercadeo. 20 de agosto, 7:00 pm (CDMX).",
 };
 
-export default function WebinarPage() {
+export default function WebinarEspecialPage() {
   return <WebinarLandingPage />;
 }
