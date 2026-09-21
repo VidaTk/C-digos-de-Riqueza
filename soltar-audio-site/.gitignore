@@ -1,0 +1,16 @@
+# Dependencias y build
+node_modules/
+.next/
+out/
+
+# Entorno
+.env
+.env.local
+.env*.local
+
+# Audios locales usados solo para subir a Vercel Blob (nunca se commitean)
+local-audio/
+
+# Editor / OS
+.DS_Store
+*.log
